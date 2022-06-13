@@ -107,6 +107,9 @@
                         <a href="score">
                             <i class="bi bi-circle"></i><span>Benchmark Score</span>
                         </a>
+                        <a href="bobot">
+                            <i class="bi bi-circle"></i><span>bobot</span>
+                        </a>
                     </li>
                 </ul>
             </li>

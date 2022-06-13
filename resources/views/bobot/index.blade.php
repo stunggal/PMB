@@ -5,13 +5,13 @@
         <!-- End Page Title -->
         <section class="section">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-10">
                     <!-- Recent Sales -->
                     <div class="col-12">
                         <div class="card recent-sales overflow-auto">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    Scores</span>
+                                    bobots</span>
                                 </h5>
                                 @if (session()->has('success'))
                                     <div class="alert alert-success">
@@ -21,27 +21,35 @@
                                 <table class="table table-striped datatable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Min</th>
-                                            <th scope="col">Matrik</th>
-                                            <th scope="col">Fail</th>
+                                            <th scope="col">Inggris Lisan</th>
+                                            <th scope="col">Arab Lisan</th>
+                                            <th scope="col">alqur'an</th>
+                                            <th scope="col">ibadah</th>
+                                            <th scope="col">inggris tulis</th>
+                                            <th scope="col">arab tulis</th>
+                                            <th scope="col">beban prodi</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($scores as $s)
-                                            <tr>
-                                                <td>{{ $s->min }}</td>
-                                                <td>{{ $s->matrik }}</td>
-                                                <td>{{ $s->fail }}</td>
+                                        <tr>
+                                            @foreach ($bobot as $bobot)
+                                                <td>{{ $bobot->inggris_lisan }}</td>
+                                                <td>{{ $bobot->arab_lisan }}</td>
+                                                <td>{{ $bobot->alquran }}</td>
+                                                <td>{{ $bobot->ibadah }}</td>
+                                                <td>{{ $bobot->inggris_tulis }}</td>
+                                                <td>{{ $bobot->arab_tulis }}</td>
+                                                <td>{{ $bobot->beban_prodi }}</td>
                                                 <td>
                                                     <form method="POST">
-                                                        <a href="{{ route('score.edit', $s->id) }}"
+                                                        <a href="{{ route('bobot.edit', $bobot->id) }}"
                                                             class="btn btn-primary bi bi-pencil"></a>
                                                         @csrf
                                                     </form>
                                                 </td>
-                                            </tr>
-                                        @endforeach
+                                            @endforeach
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

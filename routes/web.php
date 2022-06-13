@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BobotController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InsertParticipantController;
@@ -26,5 +27,6 @@ Route::resource('participants', ParticipantsController::class);
 Route::resource('period', PeriodController::class);
 Route::resource('insertparticipant', InsertParticipantController::class);
 Route::resource('score', ScoreController::class);
+Route::resource('bobot', BobotController::class);
 
 Route::resource('participant', ParticipantController::class);

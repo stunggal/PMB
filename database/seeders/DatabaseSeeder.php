@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bobot;
 use App\Models\Participants;
 use App\Models\Periodes;
 use App\Models\Score;
@@ -20,5 +21,6 @@ class DatabaseSeeder extends Seeder
         Participants::factory(1000)->create();
         Periodes::factory(7)->create();
         Score::factory(1)->create();
+        Bobot::factory(1)->create();
     }
 }
