@@ -59,6 +59,54 @@ class ParticipantsController extends Controller
             'second_choice' => 'required|string|max:255|in:pai,pba,tbi,saa,afi,iqt,pm,hes,mnj,ei,agro,ti,tip,hi,ilkom,kkk,farmasi,gizi',
             'third_choice' => 'required|string|max:255|in:pai,pba,tbi,saa,afi,iqt,pm,hes,mnj,ei,agro,ti,tip,hi,ilkom,kkk,farmasi,gizi',
         ]);
+
+        // fixed value
+        $min = 4;
+        $matrik = 3;
+        $fail = 2;
+
+        // kondisi prodi
+        $dirasah_islamiyah = $validatedData[('dirasah_islamiyah')];
+        $tbi = $validatedData[('tbi')];
+        $pengetahuan_umum = $validatedData[('pengetahuan_umum')];
+        $exact = ($validatedData[('pengetahuan_umum')] + $validatedData[('mtk')] + $validatedData[('fisika')] + $validatedData[('kimia')] + $validatedData[('biologi')]) / 5;
+
+        // kondisi 
+        function menentukanRumus($choose, $dirasah_islamiyah, $tbi, $pengetahuan_umum, $exact)
+        {
+            if ($choose == 'pai' || $choose == 'pba' || $choose == 'saa' || $choose == 'afi' || $choose == 'iqt' || $choose == 'pm') {
+                $beban_prodi = $dirasah_islamiyah;
+            } else if ($choose == 'tbi') {
+                $beban_prodi = $tbi;
+            } else if ($choose == 'hes' || $choose == 'mnj' || $choose == 'ei' || $choose == 'hi' || $choose == 'ilkom') {
+                $beban_prodi = $pengetahuan_umum;
+            } else if ($choose == 'agro' || $choose == 'ti' || $choose == 'tip' || $choose == 'kkk' || $choose == 'farmasi' || $choose == 'gizi') {
+                $beban_prodi = $exact;
+            }
+            return $beban_prodi;
+        }
+
+        // nilai wajib
+        $inggris_lisan = $validatedData[('inggris_lisan')];
+        $arab_lisan = $validatedData[('arab_lisan')];
+        $alquran = $validatedData[('alquran')];
+        $ibadah = $validatedData[('ibadah')];
+        $arab_tulis = $validatedData[('arab_tulis')];
+        $inggris_tulis = $validatedData[('inggris_tulis')];
+
+        // nilai beban prodi
+        $prodi_pertama = menentukanRumus($validatedData[('first_choice')], $dirasah_islamiyah, $tbi, $pengetahuan_umum, $exact);
+        $prodi_kedua = menentukanRumus($validatedData[('second_choice')], $dirasah_islamiyah, $tbi, $pengetahuan_umum, $exact);
+        $prodi_ketiga = menentukanRumus($validatedData[('third_choice')], $dirasah_islamiyah, $tbi, $pengetahuan_umum, $exact);
+
+
+
+
+
+
+        return $prodi_ketiga;
+
+
         Participants::create($validatedData);
         return redirect('insertparticipant')->with('success', 'Data have been added!');
     }
