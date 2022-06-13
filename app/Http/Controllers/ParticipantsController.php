@@ -62,8 +62,6 @@ class ParticipantsController extends Controller
         ]);
 
         // fixed value
-        $min = 4;
-        $matrik = 3;
         $fail = 2;
 
         // kondisi prodi
@@ -102,6 +100,7 @@ class ParticipantsController extends Controller
 
         //alternatif / kriteria |inggris lisan|arab lisan|alquran|ibadah|enggris tulis|arab tulis|beban prodi|
         $bobot = Bobot::where('id', 1)->first();
+
 
         // total bobot
         $total_bobot = $bobot->inggris_lisan + $bobot->arab_lisan + $bobot->alquran + $bobot->ibadah + $bobot->inggris_tulis + $bobot->arab_tulis + $bobot->beban_prodi;
@@ -143,22 +142,22 @@ class ParticipantsController extends Controller
         $prodi_ketiga_beban_prodi = $prodi_ketiga;
 
         // nilai matrik
-        $matrik_inggris_lisan = $matrik;
-        $matrik_arab_lisan = $matrik;
-        $matrik_alquran = $matrik;
-        $matrik_ibadah = $matrik;
-        $matrik_inggris_tulis = $matrik;
-        $matrik_arab_tulis = $matrik;
-        $matrik_beban_prodi = $matrik;
+        $matrik_inggris_lisan = $bobot->matrik;
+        $matrik_arab_lisan = $bobot->matrik;
+        $matrik_alquran = $bobot->matrik;
+        $matrik_ibadah = $bobot->matrik;
+        $matrik_inggris_tulis = $bobot->matrik;
+        $matrik_arab_tulis = $bobot->matrik;
+        $matrik_beban_prodi = $bobot->matrik;
 
         // nilai fail
-        $fail_inggris_lisan = $fail;
-        $fail_arab_lisan = $fail;
-        $fail_alquran = $fail;
-        $fail_ibadah = $fail;
-        $fail_inggris_tulis = $fail;
-        $fail_arab_tulis = $fail;
-        $fail_beban_prodi = $fail;
+        $fail_inggris_lisan = $bobot->fail;
+        $fail_arab_lisan = $bobot->fail;
+        $fail_alquran = $bobot->fail;
+        $fail_ibadah = $bobot->fail;
+        $fail_inggris_tulis = $bobot->fail;
+        $fail_arab_tulis = $bobot->fail;
+        $fail_beban_prodi = $bobot->fail;
 
         // nilai pembagi
         $pembagi_inggris_lisan = max($prodi_pertama_inggris_lisan, $prodi_kedua_inggris_lisan, $prodi_ketiga_inggris_lisan, $matrik_inggris_lisan, $fail_inggris_lisan);
@@ -230,34 +229,82 @@ class ParticipantsController extends Controller
             'fail' => $hasil_fail,
         ]);
 
-        return $array;
-        $rank_1 = max($ranked);
+        // short array by nilai tertinggi
+        arsort($array);
+        $rank_1 = array_slice($array, 0, 1);
+        $rank_2 = array_slice($array, 1, 1);
+        $rank_3 = array_slice($array, 2, 1);
+        $rank_4 = array_slice($array, 3, 1);
+        $rank_5 = array_slice($array, 4, 1);
 
-        // short array
-        $array = collect($array)->sortBy('nilai')->reverse()->toArray();
 
-        foreach ($array as $array) {
-            $i = 0;
-            $i++;
+        // input to database
+        // $validatedData = $request->validate([
+        // 'name' => 'required|string|max:255',
+        $input = [
+            'first_rank' => key($rank_1),
+            'second_rank' => key($rank_2),
+            'third_rank' => key($rank_3),
+            'fourth_rank' => key($rank_4),
+            'fifth_rank' => key($rank_5),
+        ];
+
+        // convert ke prodi asli
+        if ($input['fifth_rank'] == 'prodi_pertama') {
+            $input['fifth_rank'] = $validatedData['first_choice'];
+        }
+        if ($input['fifth_rank'] == 'prodi_kedua') {
+            $input['fifth_rank'] = $validatedData['second_choice'];
+        }
+        if ($input['fifth_rank'] == 'prodi_ketiga') {
+            $input['fifth_rank'] = $validatedData['third_choice'];
         }
 
-        return array_column($array, 'judul');
-
-
-        return $array[0]['judul'];
-        // ranking
-        foreach ($array as $array) {
-            $i = 0;
+        if ($input['fourth_rank'] == 'prodi_pertama') {
+            $input['fourth_rank'] = $validatedData['first_choice'];
         }
-        $ranking = $array[0];
+        if ($input['fourth_rank'] == 'prodi_kedua') {
+            $input['fourth_rank'] = $validatedData['second_choice'];
+        }
+        if ($input['fourth_rank'] == 'prodi_ketiga') {
+            $input['fourth_rank'] = $validatedData['third_choice'];
+        }
 
+        if ($input['third_rank'] == 'prodi_pertama') {
+            $input['third_rank'] = $validatedData['first_choice'];
+        }
+        if ($input['third_rank'] == 'prodi_kedua') {
+            $input['third_rank'] = $validatedData['second_choice'];
+        }
+        if ($input['third_rank'] == 'prodi_ketiga') {
+            $input['third_rank'] = $validatedData['third_choice'];
+        }
 
+        if ($input['second_rank'] == 'prodi_pertama') {
+            $input['second_rank'] = $validatedData['first_choice'];
+        }
+        if ($input['second_rank'] == 'prodi_kedua') {
+            $input['second_rank'] = $validatedData['second_choice'];
+        }
+        if ($input['second_rank'] == 'prodi_ketiga') {
+            $input['second_rank'] = $validatedData['third_choice'];
+        }
 
+        if ($input['first_rank'] == 'prodi_pertama') {
+            $input['first_rank'] = $validatedData['first_choice'];
+        }
+        if ($input['first_rank'] == 'prodi_kedua') {
+            $input['first_rank'] = $validatedData['second_choice'];
+        }
+        if ($input['first_rank'] == 'prodi_ketiga') {
+            $input['first_rank'] = $validatedData['third_choice'];
+        }
 
+        // concat validatedata and input
+        $input = array_merge($validatedData, $input);
 
+        Participants::create($input);
 
-
-        Participants::create($validatedData);
         return redirect('insertparticipant')->with('success', 'Data have been added!');
     }
 
