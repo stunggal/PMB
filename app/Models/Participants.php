@@ -37,5 +37,7 @@ class Participants extends Model
         'third_rank',
         'fourth_rank',
         'fifth_rank',
+        'average',
+        'period_id',
     ];
 }

@@ -310,6 +310,83 @@
                                             @endif
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">First Rank</div>
+                                            <input type="text"
+                                                class="col-lg-9 col-md-8 @if ($errors->has('first_rank')) is-invalid @endif"
+                                                name="first_rank" id="first_rank"
+                                                value="{{ $participants->first_rank }}" />
+                                            @if ($errors->has('first_rank'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('first_rank') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Second Rank</div>
+                                            <input type="text"
+                                                class="col-lg-9 col-md-8 @if ($errors->has('second_rank')) is-invalid @endif"
+                                                name="second_rank" id="second_rank"
+                                                value="{{ $participants->second_rank }}" />
+                                            @if ($errors->has('second_rank'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('second_rank') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Third Rank</div>
+                                            <input type="text"
+                                                class="col-lg-9 col-md-8 @if ($errors->has('third_rank')) is-invalid @endif"
+                                                name="third_rank" id="third_rank"
+                                                value="{{ $participants->third_rank }}" />
+                                            @if ($errors->has('third_rank'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('third_rank') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Fourh Rank</div>
+                                            <input type="text"
+                                                class="col-lg-9 col-md-8 @if ($errors->has('fourth_rank')) is-invalid @endif"
+                                                name="fourth_rank" id="fourth_rank"
+                                                value="{{ $participants->fourth_rank }}" />
+                                            @if ($errors->has('fourth_rank'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('fourth_rank') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Fifth Rank</div>
+                                            <input type="text"
+                                                class="col-lg-9 col-md-8 @if ($errors->has('fifth_rank')) is-invalid @endif"
+                                                name="fifth_rank" id="fifth_rank"
+                                                value="{{ $participants->fifth_rank }}" />
+                                            @if ($errors->has('fifth_rank'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('fifth_rank') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">period</div>
+                                            <input type="text"
+                                                class="col-lg-9 col-md-8 @if ($errors->has('period')) is-invalid @endif"
+                                                name="period" id="period" value="{{ $participants->period }}" />
+                                            @if ($errors->has('period'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('period') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary">
                                                 Submit

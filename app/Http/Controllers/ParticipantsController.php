@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Bobot;
 use App\Models\Participants;
+use App\Models\Periodes;
+use App\Models\Score;
 use Illuminate\Http\Request;
 
 class ParticipantsController extends Controller
@@ -43,32 +45,32 @@ class ParticipantsController extends Controller
             'name' => 'required|string|max:255',
             'school' => 'required|string|max:255',
             'registration_number' => 'required|integer',
-            'inggris_lisan' => 'required|integer|between:1,9',
-            'arab_lisan' => 'required|integer|between:1,9',
-            'alquran' => 'required|integer|between:1,9',
-            'ibadah' => 'required|integer|between:1,9',
-            'arab_tulis' => 'required|integer|between:1,9',
-            'inggris_tulis' => 'required|integer|between:1,9',
-            'dirasah_islamiyah' => 'required|integer|between:1,9',
-            'pengetahuan_umum' => 'required|integer|between:1,9',
-            'mtk' => 'required|integer|between:1,9',
-            'fisika' => 'required|integer|between:1,9',
-            'kimia' => 'required|integer|between:1,9',
-            'biologi' => 'required|integer|between:1,9',
-            'tbi' => 'required|integer|between:1,9',
+            'inggris_lisan' => 'required|integer|between:0,9',
+            'arab_lisan' => 'required|integer|between:0,9',
+            'alquran' => 'required|integer|between:0,9',
+            'ibadah' => 'required|integer|between:0,9',
+            'arab_tulis' => 'required|integer|between:0,9',
+            'inggris_tulis' => 'required|integer|between:0,9',
+            'dirasah_islamiyah' => 'required|integer|between:0,9',
+            'pengetahuan_umum' => 'required|integer|between:0,9',
+            'mtk' => 'required|integer|between:0,9',
+            'fisika' => 'required|integer|between:0,9',
+            'kimia' => 'required|integer|between:0,9',
+            'biologi' => 'required|integer|between:0,9',
+            'tbi' => 'required|integer|between:0,9',
             'first_choice' => 'required|string|max:255|in:pai,pba,tbi,saa,afi,iqt,pm,hes,mnj,ei,agro,ti,tip,hi,ilkom,kkk,farmasi,gizi',
             'second_choice' => 'required|string|max:255|in:pai,pba,tbi,saa,afi,iqt,pm,hes,mnj,ei,agro,ti,tip,hi,ilkom,kkk,farmasi,gizi',
             'third_choice' => 'required|string|max:255|in:pai,pba,tbi,saa,afi,iqt,pm,hes,mnj,ei,agro,ti,tip,hi,ilkom,kkk,farmasi,gizi',
         ]);
-
-        // fixed value
-        $fail = 2;
 
         // kondisi prodi
         $dirasah_islamiyah = $validatedData[('dirasah_islamiyah')];
         $tbi = $validatedData[('tbi')];
         $pengetahuan_umum = $validatedData[('pengetahuan_umum')];
         $exact = ($validatedData[('pengetahuan_umum')] + $validatedData[('mtk')] + $validatedData[('fisika')] + $validatedData[('kimia')] + $validatedData[('biologi')]) / 5;
+
+        // parameter kelulusan
+        $score = Score::where('id', 1)->first();
 
         // kondisi 
         function menentukanRumus($choose, $dirasah_islamiyah, $tbi, $pengetahuan_umum, $exact)
@@ -142,22 +144,22 @@ class ParticipantsController extends Controller
         $prodi_ketiga_beban_prodi = $prodi_ketiga;
 
         // nilai matrik
-        $matrik_inggris_lisan = $bobot->matrik;
-        $matrik_arab_lisan = $bobot->matrik;
-        $matrik_alquran = $bobot->matrik;
-        $matrik_ibadah = $bobot->matrik;
-        $matrik_inggris_tulis = $bobot->matrik;
-        $matrik_arab_tulis = $bobot->matrik;
-        $matrik_beban_prodi = $bobot->matrik;
+        $matrik_inggris_lisan = $score->matrik;
+        $matrik_arab_lisan = $score->matrik;
+        $matrik_alquran = $score->matrik;
+        $matrik_ibadah = $score->matrik;
+        $matrik_inggris_tulis = $score->matrik;
+        $matrik_arab_tulis = $score->matrik;
+        $matrik_beban_prodi = $score->matrik;
 
         // nilai fail
-        $fail_inggris_lisan = $bobot->fail;
-        $fail_arab_lisan = $bobot->fail;
-        $fail_alquran = $bobot->fail;
-        $fail_ibadah = $bobot->fail;
-        $fail_inggris_tulis = $bobot->fail;
-        $fail_arab_tulis = $bobot->fail;
-        $fail_beban_prodi = $bobot->fail;
+        $fail_inggris_lisan = $score->fail;
+        $fail_arab_lisan = $score->fail;
+        $fail_alquran = $score->fail;
+        $fail_ibadah = $score->fail;
+        $fail_inggris_tulis = $score->fail;
+        $fail_arab_tulis = $score->fail;
+        $fail_beban_prodi = $score->fail;
 
         // nilai pembagi
         $pembagi_inggris_lisan = max($prodi_pertama_inggris_lisan, $prodi_kedua_inggris_lisan, $prodi_ketiga_inggris_lisan, $matrik_inggris_lisan, $fail_inggris_lisan);
@@ -176,6 +178,8 @@ class ParticipantsController extends Controller
         $normalisasi_prodi_pertama_inggris_tulis = $prodi_pertama_inggris_tulis / $pembagi_inggris_tulis;
         $normalisasi_prodi_pertama_arab_tulis = $prodi_pertama_arab_tulis / $pembagi_arab_tulis;
         $normalisasi_prodi_pertama_beban_prodi = $prodi_pertama_beban_prodi / $pembagi_beban_prodi;
+
+        // return $normalisasi_prodi_pertama_inggris_lisan;
 
         // nilai normalisasi prodi kedua
         $normalisasi_prodi_kedua_inggris_lisan = $prodi_kedua_inggris_lisan / $pembagi_inggris_lisan;
@@ -237,7 +241,6 @@ class ParticipantsController extends Controller
         $rank_4 = array_slice($array, 3, 1);
         $rank_5 = array_slice($array, 4, 1);
 
-
         // input to database
         // $validatedData = $request->validate([
         // 'name' => 'required|string|max:255',
@@ -248,6 +251,21 @@ class ParticipantsController extends Controller
             'fourth_rank' => key($rank_4),
             'fifth_rank' => key($rank_5),
         ];
+
+        // input status
+        if (key($rank_1) == 'matrik') {
+            $input['status'] = 'matrik';
+        } elseif (key($rank_1) == 'fail') {
+            $input['status'] = 'fail';
+        } else {
+            $input['status'] = 'graduated';
+        }
+
+        // input average
+        $input['average'] = ($inggris_lisan + $arab_lisan + $alquran + $ibadah + $inggris_tulis + $arab_tulis + $prodi_pertama + $prodi_kedua + $prodi_ketiga) /  9;
+
+        // input period 
+        $input['period_id'] = Periodes::where('is_active', '1')->first()->id;
 
         // convert ke prodi asli
         if ($input['fifth_rank'] == 'prodi_pertama') {
@@ -302,6 +320,9 @@ class ParticipantsController extends Controller
 
         // concat validatedata and input
         $input = array_merge($validatedData, $input);
+
+        // input final choise
+        $input['final_choice'] = $input['first_rank'];
 
         Participants::create($input);
 
