@@ -13,7 +13,7 @@ class InsertParticipantController extends Controller
      */
     public function index()
     {
-        return view('insertparticipant.index');
+        return view('insertParticipant.index');
     }
 
     /**
